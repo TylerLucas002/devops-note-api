@@ -50,5 +50,6 @@ jobs:
             cd ~/devops-note-api
             git fetch --all
             git reset --hard origin/main
+            chmod +x backup.sh restore.sh
             sudo docker compose down
             sudo docker compose up -d --build
