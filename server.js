@@ -12,6 +12,15 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// 🌟 ĐOẠN CODE THÊM MỚI CHO TUẦN 3: API Health Check
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'OK', 
+    message: 'API is running smoothly',
+    timestamp: new Date() 
+  });
+});
+
 // Sử dụng biến môi trường cho Database
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/notedb';
 if (process.env.NODE_ENV !== 'test') {
