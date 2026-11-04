@@ -14,10 +14,10 @@ app.get('/', (req, res) => {
 
 // 🌟 ĐOẠN CODE THÊM MỚI CHO TUẦN 3: API Health Check
 app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
+  res.status(200).json({ 
+    status: 'OK', 
     message: 'API is running smoothly',
-    timestamp: new Date()
+    timestamp: new Date() 
   });
 });
 
