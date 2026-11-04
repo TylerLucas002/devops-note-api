@@ -4,6 +4,9 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+# TÊN DATABASE TRONG CODE WEB CỦA BẠN (Thường là test, notedb, hoặc note_api)
+DB_NAME="notedb"
+
 BACKUP_PATH=$1
 
 if [ ! -d "$BACKUP_PATH" ]; then
@@ -11,15 +14,18 @@ if [ ! -d "$BACKUP_PATH" ]; then
   exit 1
 fi
 
-echo "Bắt đầu khôi phục dữ liệu từ $BACKUP_PATH..."
+echo "Bắt đầu khôi phục dữ liệu vào database: $DB_NAME..."
 
-# Xóa thư mục tạm cũ trong container để tránh chồng chéo dữ liệu
+# 1. Xóa dữ liệu tạm cũ trong container
 docker exec note-api-db rm -rf /dump_restore
 
-# Copy nội dung thư mục backup vào container
-docker cp "$BACKUP_PATH" note-api-db:/dump_restore
+# 2. Tạo thư mục mang tên Database chuẩn cho mongorestore
+docker exec note-api-db mkdir -p /dump_restore/$DB_NAME
 
-# Chạy restore quét tự động toàn bộ thư mục (không ép cứng tên database)
+# 3. Copy các file bson vào chui vào ĐÚNG thư mục của database đó (lưu ý dấu /. ở cuối)
+docker cp "$BACKUP_PATH"/. note-api-db:/dump_restore/$DB_NAME/
+
+# 4. Chạy lệnh restore (MongoDB sẽ tự hiểu và đổ vào đúng DB)
 docker exec note-api-db mongorestore --drop /dump_restore
 
 echo "✅ Phục hồi dữ liệu hoàn tất!"
