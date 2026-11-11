@@ -1,4 +1,4 @@
-# Sổ tay Khắc phục sự cố (Troubleshooting Playbook) cho Smart Note API (`devops-note-api`)
+# Sổ tay Khắc phục sự cố (Troubleshooting Playbook)
 
 Mỗi sự cố được xử lý theo quy trình: **Triệu chứng → Xác minh → Nguyên nhân → Khắc phục → Phòng tránh**.
 
