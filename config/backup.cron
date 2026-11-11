@@ -1,0 +1,4 @@
+# Install as /etc/cron.d/note-api-backup after verifying the deployment path.
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 2 * * * root cd /home/ubuntu/devops-note-api && /bin/bash scripts/backup.sh >> /var/log/note-api-backup.log 2>&1

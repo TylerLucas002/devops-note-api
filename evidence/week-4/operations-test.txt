@@ -1,0 +1,160 @@
+ Network note-check-final_note-network  Creating
+ Network note-check-final_note-network  Created
+ Volume note-check-final_mongo_data  Creating
+ Volume note-check-final_mongo_data  Created
+ Container note-check-final-db  Creating
+ Container note-check-final-db  Created
+ Container note-check-final-app  Creating
+ Container note-check-final-app  Created
+ Container note-check-final-db  Starting
+ Container note-check-final-db  Started
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Starting
+ Container note-check-final-app  Started
+ Container note-check-final-app  Waiting
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Healthy
+Healthy version: operations-check
+Notes API: OK
+Homepage: OK
+2026-11-11T05:42:24.037+0000	writing `notedb.notes` to `archive on stdout`
+2026-11-11T05:42:24.039+0000	done dumping `notedb.notes` (1 document)
+Backup verified: /workspace/work/devops-note-api/work/backup-test-gghXPk/db_backup_2026-11-11_05-42-23_SwTjUF.archive.gz
+db_backup_2026-11-11_05-42-23_SwTjUF.archive.gz: OK
+ Container note-check-final-app  Stopping
+ Container note-check-final-app  Stopped
+2026-11-11T05:42:25.380+0000	preparing collections to restore from
+2026-11-11T05:42:25.416+0000	reading metadata for `notedb.notes` from `archive on stdin`
+2026-11-11T05:42:25.423+0000	dropping collection `notedb.notes` before restoring
+2026-11-11T05:42:25.431+0000	restoring `notedb.notes` from `archive on stdin`
+2026-11-11T05:42:25.442+0000	finished restoring `notedb.notes` (1 document, 0 failures)
+2026-11-11T05:42:25.442+0000	no indexes to restore for collection `notedb.notes`
+2026-11-11T05:42:25.442+0000	1 document(s) restored successfully. 0 document(s) failed to restore.
+ Container note-check-final-db  Running
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Starting
+ Container note-check-final-app  Started
+ Container note-check-final-app  Waiting
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Healthy
+Restore completed; app and database are healthy.
+PASS backup-delete-restore: original ID and content recovered
+db_backup_2026-11-11_05-42-23_SwTjUF.archive.gz: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+Healthy version: operations-check
+Notes API: OK
+Homepage: OK
+PASS checksum rejection: app remained available
+ Container note-check-final-app  Stopping
+ Container note-check-final-app  Stopped
+ Container note-check-final-db  Running
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Starting
+ Container note-check-final-app  Started
+ Container note-check-final-db  Waiting
+ Container note-check-final-app  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Healthy
+Healthy version: operations-check
+Notes API: OK
+Homepage: OK
+PASS incident 1: stopped app detected and recovered
+ Container note-check-final-db  Stopping
+ Container note-check-final-db  Stopped
+service "db" is not running
+ Container note-check-final-app  Running
+ Container note-check-final-db  Starting
+ Container note-check-final-db  Started
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Waiting
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Healthy
+Healthy version: operations-check
+Notes API: OK
+Homepage: OK
+PASS incident 2: stopped DB returned 503, backup failed, recovery verified
+ Container note-check-final-db  Running
+ Container note-check-final-app  Recreate
+ Container note-check-final-app  Recreated
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Starting
+ Container note-check-final-app  Started
+ Container note-check-final-app  Waiting
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+container note-check-final-app is unhealthy
+note-check-final-app  | {"event":"listening","version":"operations-check"}
+note-check-final-app  | {"event":"database_connection_failed"}
+note-check-final-app  | {"event":"listening","version":"operations-check"}
+note-check-final-app  | {"event":"database_connection_failed"}
+ Container note-check-final-db  Running
+ Container note-check-final-app  Recreate
+ Container note-check-final-app  Recreated
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Starting
+ Container note-check-final-app  Started
+ Container note-check-final-app  Waiting
+ Container note-check-final-db  Waiting
+ Container note-check-final-db  Healthy
+ Container note-check-final-app  Healthy
+Healthy version: operations-check
+Notes API: OK
+Homepage: OK
+PASS incident 3: invalid MONGO_URI rejected and recovered
+note-check-final-app  | {"event":"listening","version":"operations-check"}
+note-check-final-app  | {"event":"database_connected"}
+note-check-final-app  | {"time":"2026-11-11T05:43:02.162Z","method":"GET","path":"/health","status":200,"durationMs":14,"version":"operations-check"}
+note-check-final-app  | {"time":"2026-11-11T05:43:02.557Z","method":"GET","path":"/health","status":200,"durationMs":2,"version":"operations-check"}
+note-check-final-app  | {"time":"2026-11-11T05:43:02.609Z","method":"GET","path":"/notes","status":200,"durationMs":13,"version":"operations-check"}
+note-check-final-app  | {"time":"2026-11-11T05:43:02.622Z","method":"GET","path":"/","status":200,"durationMs":2,"version":"operations-check"}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:44.847+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn6","msg":"Connection ended","attr":{"remote":"127.0.0.1:58546","uuid":"68c94a29-8e6c-42fd-ad9d-19c7eabe8160","connectionId":6,"connectionCount":4}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:44.848+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn5","msg":"Connection ended","attr":{"remote":"127.0.0.1:58544","uuid":"e485915f-4e54-4377-a640-3ea2d5c72c91","connectionId":5,"connectionCount":3}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:44.848+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn3","msg":"Connection ended","attr":{"remote":"127.0.0.1:58522","uuid":"867a5990-dc5f-47ac-977a-25d7beccb1a3","connectionId":3,"connectionCount":2}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:44.848+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn4","msg":"Connection ended","attr":{"remote":"127.0.0.1:58534","uuid":"d5a18081-1bd1-4e4f-aaad-6336fd07b216","connectionId":4,"connectionCount":1}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:45.820+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:48658","uuid":"ad99a9d2-6a08-4ce3-8e2f-ae3dda6162cc","connectionId":8,"connectionCount":2}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:45.821+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn8","msg":"client metadata","attr":{"remote":"172.18.0.3:48658","client":"conn8","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"7.7.0|9.11.4"},"platform":"Node.js v22.23.4, LE","os":{"name":"linux","architecture":"x64","version":"6.18.57","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:47.560+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn1","msg":"Interrupted operation as its client disconnected","attr":{"opId":128}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:47.561+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn8","msg":"Connection ended","attr":{"remote":"172.18.0.3:48658","uuid":"ad99a9d2-6a08-4ce3-8e2f-ae3dda6162cc","connectionId":8,"connectionCount":1}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:47.561+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn1","msg":"Connection ended","attr":{"remote":"172.18.0.3:54470","uuid":"5ddf1993-4a4a-4d5b-b4ec-2c7a5626b335","connectionId":1,"connectionCount":0}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.401+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40172","uuid":"dd8cf08c-1c1e-4884-8313-179b2c9fea25","connectionId":9,"connectionCount":1}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.404+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn9","msg":"client metadata","attr":{"remote":"127.0.0.1:40172","client":"conn9","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.3"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.3"},"platform":"Node.js v24.15.0, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.408+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40178","uuid":"11af33dc-bec9-4021-ac99-2928ef5b91ce","connectionId":10,"connectionCount":2}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.409+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn10","msg":"client metadata","attr":{"remote":"127.0.0.1:40178","client":"conn10","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.3"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.3"},"platform":"Node.js v24.15.0, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.541+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40190","uuid":"fe2df455-2365-4250-ae14-abb2a53ab32c","connectionId":11,"connectionCount":3}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.541+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40204","uuid":"9147e689-f45a-4d2f-b830-98394adb910e","connectionId":12,"connectionCount":4}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.544+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn11","msg":"client metadata","attr":{"remote":"127.0.0.1:40190","client":"conn11","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.3"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.3"},"platform":"Node.js v24.15.0, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.544+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn12","msg":"client metadata","attr":{"remote":"127.0.0.1:40204","client":"conn12","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.3"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.3"},"platform":"Node.js v24.15.0, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.547+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40220","uuid":"c79aa545-3023-408a-8190-50df1d313ec5","connectionId":13,"connectionCount":5}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.551+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn13","msg":"client metadata","attr":{"remote":"127.0.0.1:40220","client":"conn13","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.3"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.3"},"platform":"Node.js v24.15.0, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.557+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn9","msg":"Connection ended","attr":{"remote":"127.0.0.1:40172","uuid":"dd8cf08c-1c1e-4884-8313-179b2c9fea25","connectionId":9,"connectionCount":4}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.558+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn12","msg":"Connection ended","attr":{"remote":"127.0.0.1:40204","uuid":"9147e689-f45a-4d2f-b830-98394adb910e","connectionId":12,"connectionCount":3}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.558+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn11","msg":"Connection ended","attr":{"remote":"127.0.0.1:40190","uuid":"fe2df455-2365-4250-ae14-abb2a53ab32c","connectionId":11,"connectionCount":2}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.558+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn10","msg":"Connection ended","attr":{"remote":"127.0.0.1:40178","uuid":"11af33dc-bec9-4021-ac99-2928ef5b91ce","connectionId":10,"connectionCount":1}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:55.558+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn13","msg":"Connection ended","attr":{"remote":"127.0.0.1:40220","uuid":"c79aa545-3023-408a-8190-50df1d313ec5","connectionId":13,"connectionCount":0}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:57.328+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:41926","uuid":"ea856114-e309-45e9-aa77-481807b7a7cc","connectionId":14,"connectionCount":1}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:57.331+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn14","msg":"client metadata","attr":{"remote":"172.18.0.3:41926","client":"conn14","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"7.7.0|9.11.4"},"platform":"Node.js v22.23.4, LE","os":{"name":"linux","architecture":"x64","version":"6.18.57","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:57.341+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:41936","uuid":"35bc918b-96b3-48d9-93eb-edc68899419b","connectionId":15,"connectionCount":2}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:57.349+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn15","msg":"client metadata","attr":{"remote":"172.18.0.3:41936","client":"conn15","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"7.7.0|9.11.4"},"platform":"Node.js v22.23.4, LE","os":{"name":"linux","architecture":"x64","version":"6.18.57","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:58.839+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:41942","uuid":"e033183b-c495-4cae-9b1c-9ec1a97bfeaf","connectionId":16,"connectionCount":3}}
+note-check-final-db   | {"t":{"$date":"2026-11-11T05:42:58.840+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn16","msg":"client metadata","attr":{"remote":"172.18.0.3:41942","client":"conn16","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"7.7.0|9.11.4"},"platform":"Node.js v22.23.4, LE","os":{"name":"linux","architecture":"x64","version":"6.18.57","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+ Container note-check-final-app  Stopping
+ Container note-check-final-app  Stopped
+ Container note-check-final-app  Removing
+ Container note-check-final-app  Removed
+ Container note-check-final-db  Stopping
+ Container note-check-final-db  Stopped
+ Container note-check-final-db  Removing
+ Container note-check-final-db  Removed
+ Network note-check-final_note-network  Removing
+ Volume note-check-final_mongo_data  Removing
+ Volume note-check-final_mongo_data  Removed
+ Network note-check-final_note-network  Removed

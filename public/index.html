@@ -956,7 +956,7 @@
                     <article class="note-card" id="note-${note._id}">
                         <div>
                             <div class="note-top">
-                                <span class="category-tag ${tagClass}">${cat}</span>
+                                <span class="category-tag ${tagClass}">${escapeHtml(cat)}</span>
                                 <span class="note-date">🕒 ${formatDate(note.createdAt)}</span>
                             </div>
                             <h3 class="note-title">${safeTitle}</h3>
