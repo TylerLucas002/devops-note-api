@@ -92,5 +92,7 @@ jobs:
             set -eu
             cd ~/devops-note-api
             git fetch origin main
-            git checkout --detach "$DEPLOY_SHA"
+            # Legacy pipeline ran chmod on tracked scripts. Ignore only mode drift;
+            # Git still refuses to overwrite local content edits.
+            git -c core.fileMode=false checkout --detach "$DEPLOY_SHA"
             sudo bash scripts/deploy.sh "$DEPLOY_SHA"
