@@ -54,9 +54,27 @@ jobs:
           name: operations-evidence
           path: work/operations.log
           retention-days: 30
+  rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify failed rollout restores the previous image and data
+        run: |
+          mkdir -p work
+          set -o pipefail
+          bash scripts/verify-rollback.sh 2>&1 | tee work/rollback.log
+        env:
+          COMPOSE_PROJECT_NAME: note-check-rollback-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rollback-evidence
+          path: work/rollback.log
+          retention-days: 30
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    needs: [test, operations]
+    needs: [test, operations, rollback]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
