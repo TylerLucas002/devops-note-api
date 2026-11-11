@@ -36,4 +36,9 @@ Các mục này cần người có quyền AWS/SSH xác minh; không gộp log C
 - [Operations: backup/restore và 3 sự cố](operations-test.txt)
 - [Audit dependency production](dependency-audit.txt)
 
-Thử nghiệm rollout/rollback bổ sung bị giới hạn dung lượng ở môi trường Docker trong cloud (`no space left on device`). Do đó chưa coi automatic rollback là đã kiểm chứng thành công; cần diễn tập lại trên staging đủ dung lượng. Không có thao tác gây lỗi trên EC2 production. Bản code được chuẩn bị trên nhánh riêng để review; chưa xác minh deployment mới trên EC2. Kết nối GitHub chưa có quyền ghi repo gốc (HTTP 403); cập nhật trạng thái khi có run deploy thành công thật.
+Thử nghiệm rollout/rollback ban đầu bị giới hạn dung lượng Docker cloud. Sau đó đã chạy thành công trên GitHub Actions: app cố tình trả 503 bị từ chối; image/version trước đó, dữ liệu ghi chú và cấu hình `.env` được phục hồi. Không có thao tác gây lỗi trên EC2 production. Bản code được chuẩn bị trên nhánh riêng để review; chưa xác minh deployment mới trên EC2. Kết nối GitHub chưa có quyền ghi repo gốc (HTTP 403); cập nhật trạng thái khi có run deploy thành công thật.
+
+
+## GitHub Actions đã xác minh
+
+[Run 42968497856](https://github.com/TylerLucas002/devops-note-api/actions/runs/42968497856), commit `6c5ce09836a79dc3adc57a07395f6a63b04581eb`: `test`, `operations`, `rollback` đều success; `deploy` skipped vì đang trên nhánh riêng. Xem [trích log rollback](rollback-ci.txt). Thay đổi tài liệu sau run này không thay đổi code đã kiểm tra.

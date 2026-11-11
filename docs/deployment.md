@@ -68,7 +68,7 @@ sudo ufw status verbose
 
 Repository → Settings → Secrets and variables → Actions: tạo `SERVER_HOST`, `SERVER_USER=ubuntu`, `SERVER_SSH_KEY`. Không ghi private key vào README hoặc ảnh. SSH user phải đọc/ghi checkout và chạy `sudo` không tương tác như luồng triển khai hiện tại.
 
-Push `main` kích hoạt test + operations rồi deploy. Đối chiếu commit SHA trên trang Actions với `version` từ `curl http://PUBLIC_IP/health`. Download artifact `operations-evidence` để xem log backup/restore và ba sự cố. Đây là thực nghiệm CI độc lập, không phải log sự cố production.
+Push `main` kích hoạt test + operations + rollback rồi deploy. Đối chiếu commit SHA trên trang Actions với `version` từ `curl http://PUBLIC_IP/health`. Download artifact `operations-evidence` để xem log backup/restore và ba sự cố. Đây là thực nghiệm CI độc lập, không phải log sự cố production.
 
 ## 6. Backup và cron
 

@@ -1,0 +1,12 @@
+Selected verification lines from GitHub Actions job 130351205192.
+Run: https://github.com/TylerLucas002/devops-note-api/actions/runs/42968497856
+2026-11-11T05:52:17.4495255Z Healthy version: 6c5ce09836a79dc3adc57a07395f6a63b04581eb
+2026-11-11T05:52:17.4715548Z Notes API: OK
+2026-11-11T05:52:17.4844547Z Homepage: OK
+2026-11-11T05:52:56.9355599Z container note-check-rollback-42968497856-app is unhealthy
+2026-11-11T05:52:56.9355998Z Deployment failed; restoring previous application image.
+2026-11-11T05:52:56.9360653Z Previous image restored; deployment remains failed.
+2026-11-11T05:52:56.9682767Z Healthy version: 6c5ce09836a79dc3adc57a07395f6a63b04581eb
+2026-11-11T05:52:56.9938012Z Notes API: OK
+2026-11-11T05:52:57.0079503Z Homepage: OK
+2026-11-11T05:52:57.0548209Z PASS rollback: bad readiness rejected; previous version, data and persisted configuration recovered

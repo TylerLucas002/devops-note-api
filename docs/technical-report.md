@@ -28,7 +28,7 @@ App chạy user không phải root, bỏ Linux capabilities và dùng filesystem
 
 `npm ci` cài theo lockfile đã đồng bộ. Test dùng MongoDB riêng, không lấy URI production. GitHub Actions chạy API test cùng MongoDB 6.0 và chạy một job operations riêng bằng Docker. Job operations tạo project tên `note-check-*`, tự kiểm thử backup/restore và gây lỗi có kiểm soát, sau đó xóa riêng tài nguyên thực nghiệm.
 
-Deploy chỉ thực hiện trên `main` khi hai job thành công. Workflow truyền SHA đầy đủ cho EC2 và checkout đúng commit đó. Image được gắn SHA để truy vết. Build diễn ra trước khi thay app đang phục vụ, vì vậy lỗi build không chủ động dừng phiên bản cũ. Nếu DB đã chạy, script sao lưu trước khi cập nhật stack. Compose chờ healthy; smoke test kiểm tra DB up, version, API danh sách và homepage.
+Deploy chỉ thực hiện trên `main` khi cả ba job test, operations và rollback thành công. Workflow truyền SHA đầy đủ cho EC2 và checkout đúng commit đó. Image được gắn SHA để truy vết. Build diễn ra trước khi thay app đang phục vụ, vì vậy lỗi build không chủ động dừng phiên bản cũ. Nếu DB đã chạy, script sao lưu trước khi cập nhật stack. Compose chờ healthy; smoke test kiểm tra DB up, version, API danh sách và homepage.
 
 Nếu kiểm tra sau cập nhật thất bại, script cố chạy lại application image cũ và vẫn trả lỗi cho pipeline. Việc giữ trạng thái failed giúp nhóm nhìn thấy deployment chưa đạt dù người dùng đã được phục hồi về bản cũ. Cơ chế này không rollback schema, dữ liệu hoặc mọi cấu hình hạ tầng. Quy trình không đạt zero downtime: một app container vẫn có thời gian thay thế, và thay cấu hình DB có thể tạo lại DB container. Dùng nhiều replica cùng reverse proxy và migration có kiểm soát là hướng nâng cấp tiếp theo.
 
@@ -61,10 +61,11 @@ Thực nghiệm Docker dùng cùng Dockerfile và Compose với production, như
 | App stopped | Kết nối thất bại, phục hồi thành công sau start/up |
 | DB stopped | Readiness 503; backup thất bại; phục hồi DB/API thành công |
 | URI sai | App không healthy, log lỗi kết nối; sửa URI và recreate phục hồi |
+| Deploy image lỗi readiness | Pipeline trả lỗi và khôi phục image/version trước, giữ dữ liệu và cấu hình |
 
 Xem [Week 4 evidence](../evidence/week-4/README.md) và artifact Actions để phân biệt kết quả kiểm tra độc lập với production. Việc pipeline hoặc script in “success” không tự chứng minh Nginx, CloudWatch, backup cron hay dữ liệu production đã được xác minh. Deployment cuối cần đối chiếu SHA trên HTTP và kết quả Actions tương ứng.
 
-Thử nghiệm rollout/rollback bổ sung chưa được xác nhận: môi trường Docker cloud hết dung lượng khi tạo container. Cơ chế rollback đã được triển khai trong script nhưng cần diễn tập lại trên staging đủ tài nguyên. Bản hoàn thiện được chuẩn bị trên nhánh riêng để review, chưa xác minh deployment mới vì kết nối hiện tại chưa có quyền ghi repo gốc (HTTP 403).
+Thử nghiệm rollout/rollback ban đầu bị giới hạn dung lượng Docker cloud, sau đó được xác minh thành công trên GitHub Actions run 42968497856: candidate trả 503 bị từ chối, phiên bản trước, dữ liệu và cấu hình được phục hồi. Bản hoàn thiện được chuẩn bị trên nhánh riêng để review, chưa xác minh deployment mới vì kết nối hiện tại chưa có quyền ghi repo gốc (HTTP 403).
 
 ## 7. Đánh giá và hạn chế
 

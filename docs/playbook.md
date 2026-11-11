@@ -76,7 +76,9 @@ df -h
 
 **Phòng tránh:** log rotation, theo dõi disk/backup, cảnh báo CPU, đo tài nguyên trước khi chọn instance.
 
-## 6. Deploy thất bại — quy trình điều tra
+## 6. Deploy thất bại — đã kiểm thử rollback trong CI
+
+**Thực nghiệm:** `scripts/verify-rollback.sh` tạo image trả 503, chạy deploy.sh và kiểm tra job trả lỗi, image/version cũ phục hồi, ghi chú còn nguyên và `.env` giữ đúng version. Xem log CI Week 4.
 
 **Triệu chứng:** Actions đỏ, version HTTP không đổi hoặc app không healthy.
 
@@ -84,4 +86,4 @@ df -h
 
 **Khôi phục:** sửa đúng nguyên nhân; nếu app cũ đã được rollback healthy thì giữ phiên bản đó và sửa trên branch trước. Dùng SHA đầy đủ của bản đã kiểm chứng khi deploy lại. Không rerun mù khi thiếu disk hoặc sai cấu hình.
 
-**Phòng tránh:** build trước thay container, `needs` cả test và operations, serialize deploy, deploy đúng SHA, kiểm tra version. Không tuyên bố rollback schema/DB đã được tự động hóa.
+**Phòng tránh:** build trước thay container, `needs` cả test, operations và rollback, serialize deploy, deploy đúng SHA, kiểm tra version. Không tuyên bố rollback schema/DB đã được tự động hóa.

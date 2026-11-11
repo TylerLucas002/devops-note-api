@@ -40,7 +40,7 @@ Test dùng MongoDB tạm nếu không đặt `MONGO_URI`. CI dùng MongoDB 6.0. 
 
 ## CI/CD
 
-Push/PR chạy kiểm thử API và bộ kiểm thử vận hành Docker độc lập. Chỉ `main` được deploy, sau khi cả hai job đạt. Deploy checkout đúng commit, build trước khi thay app, backup DB, chờ healthcheck, xác minh version và API. Nếu lỗi sau khi thay container, script thử khôi phục image trước đó và giữ job ở trạng thái failed. Một instance vẫn có gián đoạn ngắn lúc thay app; không cam kết zero downtime.
+Push/PR chạy kiểm thử API và bộ kiểm thử vận hành Docker và rollback độc lập. Chỉ `main` được deploy, sau khi cả ba job test, operations và rollback đạt. Deploy checkout đúng commit, build trước khi thay app, backup DB, chờ healthcheck, xác minh version và API. Nếu lỗi sau khi thay container, script thử khôi phục image trước đó và giữ job ở trạng thái failed. Một instance vẫn có gián đoạn ngắn lúc thay app; không cam kết zero downtime.
 
 Secrets: `SERVER_HOST`, `SERVER_USER`, `SERVER_SSH_KEY`. SSH user cần quyền `sudo` chạy Docker không hỏi mật khẩu. Các quyền này tương đương quyền quản trị server; giới hạn người có quyền sửa workflow/secrets.
 
@@ -50,7 +50,7 @@ Secrets: `SERVER_HOST`, `SERVER_USER`, `SERVER_SSH_KEY`. SSH user cần quyền 
 - [Dựng server sạch và rollback](docs/deployment.md)
 - [Monitoring, security và backup](docs/operations/README.md)
 - [Playbook thực nghiệm](docs/playbook.md)
-- [Báo cáo kỹ thuật](docs/technical-report.md)
+- [Báo cáo kỹ thuật](docs/technical-report.md) và [bản Word](docs/technical-report.docx)
 - [Kịch bản live demo và Q&A](docs/demo.md)
 - [Minh chứng Week 4](evidence/week-4/README.md)
 - [Tuần 1](evidence/week-1/README.md)
