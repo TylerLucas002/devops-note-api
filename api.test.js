@@ -66,3 +66,44 @@ describe('DELETE /notes/:id', () => {
     expect(res.statusCode).toEqual(404);
   });
 });
+describe('Operational and input contracts', () => {
+  it('serves the homepage from public/', async () => {
+    const res = await request(app).get('/');
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['content-type']).toContain('text/html');
+  });
+  it('reports readiness after pinging MongoDB', async () => {
+    const res = await request(app).get('/health');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toMatchObject({ status: 'OK', database: 'up' });
+    expect(res.body.version).toBeTruthy();
+  });
+  it('rejects missing or invalid note fields', async () => {
+    for (const data of [{}, { title: ' ', content: 'x' }, { title: {}, content: 'x' }, { title: 'x', content: 'y', category: {} }]) {
+      expect((await request(app).post('/notes').send(data)).statusCode).toBe(400);
+    }
+  });
+  it('rejects oversized titles and malformed IDs', async () => {
+    expect((await request(app).post('/notes').send({title:'x'.repeat(201),content:'x'})).statusCode).toBe(400);
+    expect((await request(app).delete('/notes/not-an-id')).statusCode).toBe(400);
+  });
+  it('does not allow clients to assign IDs or creation dates', async () => {
+    const id = new mongoose.Types.ObjectId().toString();
+    const res = await request(app).post('/notes').send({title:'safe',content:'safe',_id:id,createdAt:'2000-01-01'});
+    expect(res.statusCode).toBe(201);
+    expect(res.body._id).not.toBe(id);
+    expect(res.body.createdAt).not.toContain('2000-01-01');
+  });
+  it('keeps liveness up but readiness and data requests fail when DB disconnects', async () => {
+    await mongoose.disconnect();
+    try {
+      expect((await request(app).get('/live')).statusCode).toBe(200);
+      const health = await request(app).get('/health');
+      expect(health.statusCode).toBe(503);
+      expect(health.body.database).toBe('down');
+      expect((await request(app).get('/notes')).statusCode).toBe(503);
+    } finally {
+      await mongoose.connect(process.env.MONGO_URI || mongoServer.getUri());
+    }
+  });
+});

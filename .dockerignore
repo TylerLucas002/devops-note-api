@@ -1,0 +1,8 @@
+node_modules
+.git
+.env*
+evidence
+docs
+work
+coverage
+*.log

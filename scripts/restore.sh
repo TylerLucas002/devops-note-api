@@ -1,31 +1,20 @@
-#!/bin/bash
-if [ -z "$1" ]; then
-  echo "❌ Vui lòng nhập tên thư mục backup!"
-  exit 1
+#!/usr/bin/env bash
+set -Eeuo pipefail
+cd "$(dirname "$0")/.."
+archive=${1:-}
+if [[ ! -f "$archive" || ! -f "$archive.sha256" ]]; then
+  echo 'Usage: CONFIRM_RESTORE=yes ./scripts/restore.sh /absolute/path/backup.archive.gz (checksum required)' >&2; exit 1
 fi
-
-# TÊN DATABASE TRONG CODE WEB CỦA BẠN (Thường là test, notedb, hoặc note_api)
-DB_NAME="notedb"
-
-BACKUP_PATH=$1
-
-if [ ! -d "$BACKUP_PATH" ]; then
-  echo "❌ LỖI: Không tìm thấy thư mục backup tại đường dẫn: $BACKUP_PATH"
-  exit 1
-fi
-
-echo "Bắt đầu khôi phục dữ liệu vào database: $DB_NAME..."
-
-# 1. Xóa dữ liệu tạm cũ trong container
-docker exec note-api-db rm -rf /dump_restore
-
-# 2. Tạo thư mục mang tên Database chuẩn cho mongorestore
-docker exec note-api-db mkdir -p /dump_restore/$DB_NAME
-
-# 3. Copy các file bson vào chui vào ĐÚNG thư mục của database đó (lưu ý dấu /. ở cuối)
-docker cp "$BACKUP_PATH"/. note-api-db:/dump_restore/$DB_NAME/
-
-# 4. Chạy lệnh restore (MongoDB sẽ tự hiểu và đổ vào đúng DB)
-docker exec note-api-db mongorestore --drop /dump_restore
-
-echo "✅ Phục hồi dữ liệu hoàn tất!"
+[[ ${CONFIRM_RESTORE:-} == yes ]] || { echo 'Restore replaces existing collections. Set CONFIRM_RESTORE=yes after reviewing the target and backup.' >&2; exit 1; }
+DB_NAME=${DB_NAME:-notedb}
+[[ "$DB_NAME" =~ ^[a-zA-Z0-9_-]+$ ]] || { echo 'Invalid DB_NAME' >&2; exit 1; }
+archive=$(realpath "$archive")
+(cd "$(dirname "$archive")" && sha256sum -c "$(basename "$archive").sha256")
+# Validate before stopping writers. Recovery always tries to restart the app.
+docker compose exec -T db mongosh --quiet --eval 'quit(db.adminCommand("ping").ok ? 0 : 1)' >/dev/null
+docker compose stop app
+trap 'docker compose start app >&2 || true' EXIT
+docker compose exec -T db mongorestore --archive --gzip --drop --stopOnError --nsInclude "$DB_NAME.*" < "$archive"
+docker compose up -d --no-build --wait --wait-timeout 120 app
+trap - EXIT
+echo 'Restore completed; app and database are healthy.'
