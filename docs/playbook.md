@@ -57,7 +57,7 @@ ss -tulpn | grep -E '80|3000'
 | 1 | [Mất kết nối Database (Container `note-api-db` bị sập)](#1-mất-kết-nối-database-container-note-api-db-bị-sập) | Production (AWS EC2) / API `/notes` trả về `500`, `docker ps` |
 | 2 | [Quá tải CPU máy chủ (CPU Alert)](#2-quá-tải-cpu-máy-chủ-cpu-alert) | Production (AWS EC2) / Cảnh báo AWS CloudWatch `CPU > 70%` |
 | 3 | [Dịch vụ Backend `note-api-app` bị sập / Lỗi 502 Bad Gateway](#3-dịch-vụ-backend-note-api-app-bị-sập--lỗi-502-bad-gateway) | Production (AWS EC2) / Trình duyệt & Nginx `error.log` |
-| 4 | [Đầy ổ cứng máy chủ EC2 (`No space left on device`)](#4-đầy-ổ-cứng-máy-chủ-ec2-no-space-left-on-device) | Production (AWS EC2) / `docker compose up`, MongoDB hoặc `backup.sh` |
+| 4 | [Đầy ổ cứng máy chủ EC2 (`No space left on device`)](#4-đầy-ổ-cứng-máy-chủ-ec2-no-space-left-on-device) | Production (AWS EC2) / `docker compose up`, MongoDB hoặc `scripts/backup.sh` |
 | 5 | [Lỗi triển khai tự động CI/CD (Pipeline Deploy thất bại)](#5-lỗi-triển-khai-tự-động-cicd-pipeline-deploy-thất-bại) | GitHub Actions (`.github/workflows/deploy.yml`) / Sau khi push nhánh `main` |
 
 ---
@@ -100,7 +100,7 @@ docker compose restart db
 
 # 2. Nếu container vẫn lỗi hoặc dữ liệu bị hỏng, kiểm tra danh sách backup và khôi phục từ bản sao lưu gần nhất
 ls -lt /home/ubuntu/backups
-./restore.sh /home/ubuntu/backups/<ten_thu_muc_backup>
+./scripts/restore.sh /home/ubuntu/backups/<ten_thu_muc_backup>
 
 # 3. Khởi động lại cả stack để đảm bảo app kết nối lại ổn định
 docker compose up -d
@@ -111,7 +111,7 @@ docker compose up -d
 ##### Phòng tránh (Prevention)
 
 - Giữ cấu hình `restart: always` trong `docker-compose.yml` để Docker tự động khởi động lại container `note-api-db` khi gặp sự cố.
-- Thiết lập cronjob chạy định kỳ `./backup.sh` hằng ngày để luôn có bản sao lưu mới trong `/home/ubuntu/backups`.
+- Thiết lập cronjob chạy định kỳ `./scripts/backup.sh` hằng ngày để luôn có bản sao lưu mới trong `/home/ubuntu/backups`.
 - Thêm healthcheck cho dịch vụ `db` trong `docker-compose.yml` và cấu hình cảnh báo khi container dừng hoặc `GET /notes` trả về lỗi `5xx`.
 
 ---
@@ -223,7 +223,7 @@ sudo nginx -t && sudo systemctl reload nginx
 ##### Triệu chứng (Symptoms)
 
 - **Giao diện/Client:** Không thể tạo ghi chú mới (`POST /notes` trả về lỗi `500`), hoặc ứng dụng bị ngừng đột ngột sau một đợt deploy mới.
-- **Giám sát (Monitoring):** Log Docker/MongoDB hoặc GitHub Actions xuất hiện thông báo **`no space left on device`**; `backup.sh` chạy thất bại.
+- **Giám sát (Monitoring):** Log Docker/MongoDB hoặc GitHub Actions xuất hiện thông báo **`no space left on device`**; `scripts/backup.sh` chạy thất bại.
 
 ##### Xác minh (Verification)
 
@@ -309,7 +309,7 @@ Các bước cụ thể để đưa hệ thống hoạt động trở lại:
 # 2. Đồng bộ code thủ công và khởi chạy lại container trên EC2 để khôi phục ngay dịch vụ
 git fetch --all
 git reset --hard origin/main
-chmod +x backup.sh restore.sh
+chmod +x scripts/backup.sh scripts/restore.sh
 sudo docker compose down
 sudo docker compose up -d --build
 ```

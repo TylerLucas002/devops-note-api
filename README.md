@@ -43,3 +43,10 @@ Pipeline được định nghĩa tại file `.github/workflows/deploy.yml` và t
 - `SERVER_HOST`: Địa chỉ IP Public của máy chủ AWS EC2.
 - `SERVER_USER`: Tên người dùng SSH (mặc định: `ubuntu`).
 - `SERVER_SSH_KEY`: Nội dung toàn bộ khóa bí mật (`.pem`) dùng để kết nối SSH.
+
+## Tài liệu và minh chứng
+
+- [Kiến trúc hệ thống](docs/architecture/README.md) và [sơ đồ](docs/architecture/diagram.png).
+- [Báo cáo tuần 1](docs/week-1/README.md) và [ảnh minh chứng](evidence/week-1/).
+- Tuần 2: [Deploy tự động](docs/week-2/automated-deployment.md), [lưu dữ liệu](docs/week-2/database-persistence.md), [pipeline lỗi](docs/week-2/fail-pipeline.md) và [ảnh minh chứng](evidence/week-2/).
+- [Playbook vận hành tuần 3](docs/playbook.md), [script sao lưu](scripts/backup.sh) và [script khôi phục](scripts/restore.sh).
